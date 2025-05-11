@@ -16,18 +16,17 @@ import java.util.Collections;
 @SpringBootApplication
 public class ShopeaseApplication {
 
-	// @Value("${stripe.secret}")
-	// private String stripeSecret;
+	@Value("${stripe.secret}")
+	private String stripeSecret;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShopeaseApplication.class, args);
-
 	}
 
-	// @PostConstruct
-	// public void init(){
-	// 	Stripe.apiKey = this.stripeSecret;
-	// }
+	@PostConstruct
+	public void init(){
+		Stripe.apiKey = this.stripeSecret;
+	}
 
 	@Bean
 	public CorsFilter corsFilter() {
@@ -40,6 +39,4 @@ public class ShopeaseApplication {
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
-
-
 }

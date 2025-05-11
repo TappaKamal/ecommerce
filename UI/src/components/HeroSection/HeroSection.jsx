@@ -1,10 +1,12 @@
 import React from 'react'
-import HeroImg from '../../assets/img/hero-img.png'
+
+import HeroImg2 from "../../assets/img/NewUpdate_DesktopHeroTemplate_3000x1200_ref._CB550300935_.jpg"
+
 
 const HeroSection = () => {
   return (
     <div className='relative flex items-center bg-cover flext-start bg-center text-left h-svh w-full' style={{backgroundImage
-    : `url(${HeroImg})`}}>
+    : `url(${HeroImg2})`}}>
         <div className='absolute top-0 right-0 bottom-0 left-0'></div>
             <main className='px-10 lg:px-24 z-10'>
                 <div className='text-left'>

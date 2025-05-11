@@ -5,8 +5,8 @@ import com.thecodereveal.shopease.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/api/auth")
+@RestController("authControllerMain")
+@RequestMapping("/api/legacy-auth")
 public class AuthController {
 
     private final UserRepository userRepository;
