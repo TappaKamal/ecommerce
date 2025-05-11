@@ -22,84 +22,131 @@ const Account = () => {
       .finally(() => {
         dispatch(setLoading(false));
       });
-  }, []);
+  }, [dispatch]);
 
- 
+  const handleLogout = useCallback(() => {
+    logOut();
+    navigate('/v1/login');
+  }, [navigate]);
+
   return (
     <div className="p-8">
-        {isUserAdmin && <div className="text-right"><Link to={"/admin"} className="text-lg text-blue-900 underline">Manage Admin</Link></div>}
+      {isUserAdmin && (
+        <div className="text-right mb-4">
+          <Link to={"/admin"} className="text-indigo-600 hover:text-indigo-800 font-medium flex items-center justify-end">
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            Admin Panel
+          </Link>
+        </div>
+      )}
+      
       {userInfo?.email && (
         <>
-          <p className="text-xl font-bold">Hello {userInfo?.firstName}</p>
-          <p>Welcome to your account</p>
+          <div className="bg-gray-50 rounded-lg p-4 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Hello {userInfo?.firstName || 'there'}!</h1>
+              <p className="text-gray-600">Welcome to your account dashboard</p>
+            </div>
+            <button 
+              onClick={handleLogout}
+              className="mt-3 sm:mt-0 flex items-center text-sm font-medium text-red-600 hover:text-red-800 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+              </svg>
+              Sign Out
+            </button>
+          </div>
+          
           <div className="md:flex mt-4">
-            <ul className="lex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
-              <li>
+            <div className="mb-6 md:mb-0 md:w-64 md:mr-8">
+              <nav className="bg-white shadow rounded-lg overflow-hidden">
                 <NavLink
-                  to={"/account-details/profile"}
-                  className={({isActive})=> [
-                    isActive? "bg-black hover:bg-gray-400":"bg-gray-400 hover:bg-black",
-                    "inline-flex items-center px-4 py-3 text-white rounded-lg active w-full"
-                  ].join(" ")}
+                  to="/account-details/profile"
+                  className={({isActive}) => 
+                    isActive 
+                      ? "flex items-center px-4 py-3 bg-indigo-50 border-l-4 border-indigo-600 text-indigo-700 font-medium" 
+                      : "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors"
+                  }
                 >
                   <svg
-                    className="w-4 h-4 me-2 text-white"
+                    className="w-5 h-5 mr-3"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
+                    fill="none"
                     viewBox="0 0 20 20"
+                    stroke="currentColor"
                   >
-                    <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                   Profile
                 </NavLink>
-              </li>
-              <li>
                 <NavLink
-                  to={"/account-details/orders"}
-                  className={({isActive})=> [
-                    isActive? "bg-black hover:bg-gray-400":"bg-gray-400 hover:bg-black",
-                    "inline-flex items-center px-4 py-3 text-white rounded-lg active w-full"
-                  ].join(" ")}
+                  to="/account-details/orders"
+                  className={({isActive}) => 
+                    isActive 
+                      ? "flex items-center px-4 py-3 bg-indigo-50 border-l-4 border-indigo-600 text-indigo-700 font-medium" 
+                      : "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors"
+                  }
                 >
                   <svg
-                    className="w-4 h-4 me-2 text-white"
+                    className="w-5 h-5 mr-3"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <path
-                      d="M13.5833 7.39473L13.5138 6.45768C13.4501 5.59928 12.7083 4.93421 11.8146 4.93421H9.99368M3.5 16.4167H2.45365C1.465 16.4167 0.683979 15.609 0.754417 14.6594L1.36283 6.45769C1.42651 5.59928 2.16831 4.93421 3.06207 4.93421H4.88298M4.88298 4.93421V3.29385C4.88298 1.93494 6.02705 0.833328 7.43833 0.833328C8.84961 0.833328 9.99368 1.93494 9.99368 3.29385V4.93421M4.88298 4.93421H9.99368M13.5833 12.75C13.5833 13.7625 12.7625 14.5833 11.75 14.5833C10.7375 14.5833 9.91667 13.7625 9.91667 12.75M8.08333 18.25H15.4167C16.4292 18.25 17.25 17.4292 17.25 16.4167V11.8333C17.25 10.8208 16.4292 9.99999 15.4167 9.99999H8.08333C7.07081 9.99999 6.25 10.8208 6.25 11.8333V16.4167C6.25 17.4292 7.07081 18.25 8.08333 18.25Z"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
                   Orders
                 </NavLink>
-              </li>
-              <li>
                 <NavLink
-                  to={"/account-details/settings"}
-                  className={({isActive})=> [
-                    isActive? "bg-black hover:bg-gray-400":"bg-gray-400 hover:bg-black",
-                    "inline-flex items-center px-4 py-3 text-white rounded-lg active w-full"
-                  ].join(" ")}
+                  to="/account-details/settings"
+                  className={({isActive}) => 
+                    isActive 
+                      ? "flex items-center px-4 py-3 bg-indigo-50 border-l-4 border-indigo-600 text-indigo-700 font-medium" 
+                      : "flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors"
+                  }
                 >
                   <svg
-                    className="w-4 h-4 me-2 text-white"
+                    className="w-5 h-5 mr-3"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                   >
-                    <path d="M18 7.5h-.423l-.452-1.09.3-.3a1.5 1.5 0 0 0 0-2.121L16.01 2.575a1.5 1.5 0 0 0-2.121 0l-.3.3-1.089-.452V2A1.5 1.5 0 0 0 11 .5H9A1.5 1.5 0 0 0 7.5 2v.423l-1.09.452-.3-.3a1.5 1.5 0 0 0-2.121 0L2.576 3.99a1.5 1.5 0 0 0 0 2.121l.3.3L2.423 7.5H2A1.5 1.5 0 0 0 .5 9v2A1.5 1.5 0 0 0 2 12.5h.423l.452 1.09-.3.3a1.5 1.5 0 0 0 0 2.121l1.415 1.413a1.5 1.5 0 0 0 2.121 0l.3-.3 1.09.452V18A1.5 1.5 0 0 0 9 19.5h2a1.5 1.5 0 0 0 1.5-1.5v-.423l1.09-.452.3.3a1.5 1.5 0 0 0 2.121 0l1.415-1.414a1.5 1.5 0 0 0 0-2.121l-.3-.3.452-1.09H18a1.5 1.5 0 0 0 1.5-1.5V9A1.5 1.5 0 0 0 18 7.5Zm-8 6a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   Settings
                 </NavLink>
-              </li>
-            </ul>
-            <div className="px-4 w-full rounded-lg">
+                <Link
+                  to="/dashboard"
+                  className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-indigo-600 transition-colors"
+                >
+                  <svg
+                    className="w-5 h-5 mr-3"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                  Dashboard
+                </Link>
+              </nav>
+            </div>
+            <div className="flex-1">
+              <div className="bg-white shadow rounded-lg p-6">
                 <Outlet />
-
+              </div>
             </div>
           </div>
         </>

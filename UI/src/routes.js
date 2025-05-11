@@ -17,15 +17,18 @@ import OrderConfirmed from "./pages/OrderConfirmed/Order";
 import Profile from "./pages/Account/Profile";
 import Orders from "./pages/Account/Orders";
 import Settings from "./pages/Account/Settings";
-
+import Dashboard from "./pages/Dashboard/Dashboard";
 import { AdminPanel } from "./pages/AdminPanel/AdminPanel";
-
-
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import NotFound from "./components/ErrorBoundary/NotFound";
+import Error from "./components/ErrorBoundary/Error";
+import MockLoginDashboard from "./pages/MockLogin/MockLoginDashboard";
 
 export const router = createBrowserRouter([
     {
       path: "/",
       element: <ShopApplicationWrapper />,
+      errorElement: <ErrorBoundary />,
       children:[
         {
             path:"/",
@@ -42,15 +45,27 @@ export const router = createBrowserRouter([
         {
           path:"/product/:slug",
           loader: loadProductBySlug,
-          element: <ProductDetails />
+          element: <ProductDetails />,
+          errorElement: <ErrorBoundary />
         },
         {
          path:'/cart-items',
          element: <Cart />
         },
         {
+          path:'/dashboard',
+          element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
+          errorElement: <ErrorBoundary />
+        },
+        {
+          path:'/mock-login',
+          element: <MockLoginDashboard />,
+          errorElement: <ErrorBoundary />
+        },
+        {
           path:'/account-details/',
           element: <ProtectedRoute><Account /></ProtectedRoute>,
+          errorElement: <ErrorBoundary />,
           children:[
             {
               path:'profile',
@@ -68,17 +83,23 @@ export const router = createBrowserRouter([
          },
          {
           path:'/checkout',
-          element:<ProtectedRoute><Checkout /></ProtectedRoute>
+          element:<ProtectedRoute><Checkout /></ProtectedRoute>,
+          errorElement: <ErrorBoundary />
          },
          {
           path:'/orderConfirmed',
           element: <OrderConfirmed />
+         },
+         {
+          path: 'error',
+          element: <Error />
          }
       ]
     },
     {
       path:"/v1/",
       element:<AuthenticationWrapper />,
+      errorElement: <ErrorBoundary />,
       children:[
         {
           path:"login",
@@ -92,14 +113,22 @@ export const router = createBrowserRouter([
     },
     {
       path:'/oauth2/callback',
-      element:<OAuth2LoginCallback />
+      element:<OAuth2LoginCallback />,
+      errorElement: <ErrorBoundary />
     },
     {
       path:'/confirmPayment',
-      element:<ConfirmPayment />
+      element:<ConfirmPayment />,
+      errorElement: <ErrorBoundary />
     },
     {
       path:'/admin/*',
-      element:<ProtectedRoute><AdminPanel /></ProtectedRoute>
+      element:<ProtectedRoute><AdminPanel /></ProtectedRoute>,
+      errorElement: <ErrorBoundary />
+    },
+    {
+      // Catch-all route for 404 pages
+      path: '*',
+      element: <NotFound />
     }
   ]);
